@@ -1,0 +1,74 @@
+openapi: 3.0.2
+info:
+  title: API-First Spring Boot Example
+  description: "Simple example of API-First integration in a Spring Boot application!"
+  version: 1.0.0-SNAPSHOT
+tags:
+  - name: herigone
+    description: herigone operations
+
+paths:
+  /herigone:
+    get:
+      tags:
+        - herigone
+      summary: Find herigone word by date
+      description: Find herigone word by date
+      operationId: findHerigoneByDate
+      parameters:
+        - name: date
+          in: query
+          description: The date in format dd/MM/yyyy or yyyy
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HerigoneDTO'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: REQUEST_VALIDATION_ERROR
+                error: There are some validation errors
+        404:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+components:
+  schemas:
+    HerigoneDTO:
+      type: object
+      required:
+        - date
+        - herigoneCode
+        - words
+      properties:
+        date:
+          type: string
+          example: 15/08/2022
+        herigoneCode:
+          type: string
+          example: HRRPT
+        words:
+          type: array
+          items:
+            type: string
+    ErrorDTO:
+      type: object
+      properties:
+        code:
+          type: string
+          example: BOOK_NOT_FOUND
+        error:
+          type: string
+          example: The book was not found
